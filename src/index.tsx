@@ -1,5 +1,5 @@
 import * as d3 from 'd3';
-import { useEffect, useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 import cloud from './cloud';
 
 const WEIGHT_COLORS = ['#CAC9C9', '#B3ACFF', '#9185FF', '#654CFF', '#5A45E4', '#4E3CC6'];

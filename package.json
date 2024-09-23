@@ -1,5 +1,5 @@
 {
-  "name": "wordcloud",
+  "name": "react-d3-wordcloud",
   "version": "1.0.0",
   "description": "create an npm package based on the template",
   "main": "lib/index.js",
@@ -25,6 +25,7 @@
   },
   "peerDependencies": {
     "react": ">=16.0.0",
-    "d3": "*"
+    "d3": "*",
+    "core-js": ">=3.0.0"
   }
 }

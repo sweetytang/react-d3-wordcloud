@@ -11,7 +11,7 @@ const SPIRALS = {
 const cw = 1 << 11 >> 5;
 const ch = 1 << 11;
 
-export default function Cloud() {
+export default function() {
   var size = [256, 256],
       text = cloudText,
       font = cloudFont,
@@ -61,19 +61,14 @@ export default function Cloud() {
       var start = Date.now();
       while (Date.now() - start < timeInterval && ++i < n && timer) {
         var d = data[i];
-        d.x = size[0] >> 1;
-        d.y = size[1] >> 1;
-
+        d.x = (size[0] * (random() + .5)) >> 1;
+        d.y = (size[1] * (random() + .5)) >> 1;
         cloudSprite(contextAndRatio, d, data, i);
-
         if (d.hasText && place(board, d, bounds)) {
           tags.push(d);
           event.call("word", cloud, d);
           if (bounds) cloudBounds(bounds, d);
           else bounds = [{x: d.x + d.x0, y: d.y + d.y0}, {x: d.x + d.x1, y: d.y + d.y1}];
-          // Temporary hack
-          d.x -= size[0] >> 1;
-          d.y -= size[1] >> 1;
         }
       }
       if (i >= n) {
@@ -244,8 +239,8 @@ function cloudSprite(contextAndRatio, d, data, di) {
       ratio = contextAndRatio.ratio;
 
   c.clearRect(0, 0, (cw << 5) / ratio, ch / ratio);
-  var x = 0, // xoff
-      y = 0, // yoff
+  var x = 0,
+      y = 0,
       maxh = 0,
       n = data.length;
   --di;
@@ -253,12 +248,10 @@ function cloudSprite(contextAndRatio, d, data, di) {
     d = data[di];
     c.save();
     c.font = d.style + " " + d.weight + " " + ~~((d.size + 1) / ratio) + "px " + d.font;
-    debugger
-
     const metrics = c.measureText(d.text);
     const anchor = -Math.floor(metrics.width / 2);
-    let w = (metrics.width + 1) * ratio; // +1 ？
-    let h = d.size << 1; // *2 ？
+    let w = (metrics.width + 1) * ratio;
+    let h = d.size << 1;
     if (d.rotate) {
       var sr = Math.sin(d.rotate * RADIANS),
           cr = Math.cos(d.rotate * RADIANS),
@@ -272,14 +265,14 @@ function cloudSprite(contextAndRatio, d, data, di) {
       w = (w + 0x1f) >> 5 << 5;
     }
     if (h > maxh) maxh = h;
-    if (x + w >= (cw << 5)) { // x轴越界
+    if (x + w >= (cw << 5)) {
       x = 0;
       y += maxh;
       maxh = 0;
     }
-    if (y + h >= ch) break; // y轴越界，开始试试下一个词
+    if (y + h >= ch) break;
     c.translate((x + (w >> 1)) / ratio, (y + (h >> 1)) / ratio);
-    // if (d.rotate) c.rotate(d.rotate * RADIANS);
+    if (d.rotate) c.rotate(d.rotate * RADIANS);
     c.fillText(d.text, anchor, 0);
     if (d.padding) c.lineWidth = 2 * d.padding, c.strokeText(d.text, anchor, 0);
     c.restore();
