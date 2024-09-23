@@ -1,0 +1,16 @@
+{
+    "compilerOptions": {
+        "module": null,
+        "target": "ES5",
+        "jsx": "react-jsx",
+        "lib": ["ES2015", "DOM"],
+        "allowJs": true,
+        "outDir": "./lib",
+    },
+    "exclude": [
+        "node_modules"
+    ],
+    "include": [
+        "src/**/*.{j,t}s{,x}"
+    ]
+}
